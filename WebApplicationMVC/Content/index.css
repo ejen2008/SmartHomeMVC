@@ -1,0 +1,92 @@
+﻿body {
+    background: url(/Content/smartHomeBackImage.jpg);
+    background-repeat: repeat;
+    background-position: 50% 50%;
+    background-size: contain;
+}
+
+.imageIconDevice {
+    background-color: rgba(74, 255, 164, 0.00);
+}
+
+.container {
+    border-radius: 20px 20px 20px 20px;
+    background-color: rgba(74, 255, 164, 0.63);
+}
+
+.footer {
+    background-color: rgba(0, 0, 0, 0.00);
+    border-radius: 0px 0px 20px 20px;
+}
+
+.vcenter {
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+}
+
+.imageButton {
+    width: unset;
+    background-color: rgba(74, 255, 164, 0.63);
+}
+
+.imageButtonIcon {
+    /*width: 23px;*/
+    width: 6%;
+    border-radius: 15% 15% 15% 15%;
+    border: 2px solid #000000;
+}
+
+
+.devicePadding {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.deviceBorder {
+    border: 3px solid #005098;
+    border-radius: 10px 10px 10px 10px;
+    /*background-color: white;*/
+}
+
+.myContact {
+    color: white;
+}
+
+.deviceName {
+    font-weight: bold;
+    font-size: 200%;
+    color: #abf64c;
+}
+
+.devicePanel {
+    background-color: rgba(74, 255, 164, 0.63);
+}
+
+#imageHeader {
+    border-radius: 20px 20px 20px 20px;
+    padding: 0px;
+    background-color: rgba(74, 255, 164, 0.00);
+    width: 300px;
+}
+
+#PanelMain {
+    background-color: rgba(0, 0, 0, 0.00);
+}
+
+#PanelMenu {
+    background-color: rgba(74, 255, 164, 0.63);
+    border-radius: 20px 20px 20px 20px;
+}
+
+#head-list {
+    color: #abf64c;
+    font-weight: bold;
+    font-size: 100%;
+}
+
+#createNewDev {
+    color: #abf64c;
+    font-weight: bold;
+}
+

@@ -1,0 +1,173 @@
+﻿@using WebApplicationMVC.Views.Helpers
+@using WebApplicationMVC.Models
+@using SmartHome
+@model DeviceDataView
+@{
+    Layout = null;
+}
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Index</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link href="~/Content/index.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="row">
+                @* @Url.Content("~/Content/SmaryHomeLogo.png")*@
+                <img class="col-xs-3 img-responsive vcenter" id="imageHeader" src="/Content/SmaryHomeLogo.png" /><!--
+---------------><h1 class="col-xs-9 vcenter" id="head-list">Smart System Home Controls</h1>
+            </div>
+        </header>
+    </div>
+    <main class="container">
+        <menu class="row">
+            <div class="">
+                @{
+                    string cssClassSizeImageButton = "deviceBorder imageButton img-responsive";
+                }
+                @Html.ActionLinkImage(Url.Content("~/Content/createDevice.png"), @"Main\CreateDevice", "col-xs-1 devicePadding text-center", cssClassSizeImageButton, "Создать новое устройство")
+
+                @for (int i = 0; i < Model.DeviceList.Count; i++)
+                {
+                    IDevicable device = Model.DeviceList[i];
+                    string cssClassDevice;
+                    if (device.State == true)
+                    {
+                        cssClassDevice = "col-xs-1 devicePadding deviceOn";//написать css
+                    }
+                    else
+                    {
+                        cssClassDevice = "col-xs-1 devicePadding deviceOff";
+                    }
+                    string imageIconDevice = Model.LinkIconDevice(device);
+                    string urlIconDevice = Url.Content(imageIconDevice);
+
+                    @Html.ActionLinkImage(urlIconDevice, @"Main\ActiveDevice", cssClassDevice, cssClassSizeImageButton, device.Name);
+                }
+                @* @Html.ActionLinkImage(Model.LinkIconDevice(Model.DeviceList[0]), @"Main\ActiveDevice", "col-xs-3 devicePadding deviceOn", cssClassSizeImageButton, Model.DeviceList[0].Name);*@
+            </div>
+
+        </menu>
+        <article>
+            <div class="col-xs-6 col-sm-push-3 devicePadding deviceBorder row">
+                @if (Model.DeviceActive != null)
+                {
+                    using (Html.BeginForm("ActiveDevice", "Main"))
+                    {
+
+
+                        IDevicable device = Model.DeviceActive;
+                        string title = device.Name + " выкл.";
+
+                        <span id="nameDevice" class="col-xs-11  text-center  devicePadding deviceName">@device.Name</span>
+                        @Html.ActionLinkImage(Url.Content("~/Content/button-trash.png"), "Main/DeleteDevice", "btn-md", "btn-danger imageButtonIcon", "Удалить устройство")
+
+                        if (device.State == true)
+                        {
+                            title = device.Name + " вкл.";
+                        }
+                        <img class="col-xs-6 devicePadding imageIconDevice" src="@Url.Content(Model.LinkIconDevice(device))" title="@title" />
+
+                        <div id="NavigationDevice">
+                            @{
+
+                                title = "Включить устройство";
+                                string cssClass = "btn-danger imageButtonIcon";
+                                string cssClassImageButton = "btn-success imageButtonIcon";
+                                string cssClassTextBox = "col-xs-1 input-md devicePadding";
+                                string cssSizeButton = "btn-md";
+                                if (device.State == true)
+                                {
+                                    title = "Выключить устройство";
+                                    cssClass = cssClassImageButton;
+
+                                }
+                            }
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-OnOff.png"), "Main/OnOffDevice", cssSizeButton, cssClass, title)
+
+                            @if (Model.Message != null)
+                            {
+                                <span class="text-error">@Model.Message</span>
+                            }
+                            <br />
+                            @{
+
+                                if (device is IVolumenable)
+                                {
+                                    @Html.TextBox("TextBoxVolume", ((IVolumenable)device).Volume, new { id = "TextBoxVolume", title = "Установить громкость", @class = cssClassTextBox, type = "number" });
+                                    @Html.ActionLinkImage(Url.Content("~/Content/button-volumeDown.png"), "Main/Volume/Down", cssSizeButton, cssClassImageButton, "Уменьшить громкость");
+                                    @Html.ActionLinkImage(Url.Content("~/Content/button-volumeUp.png"), "Main/Volume/Up", cssSizeButton, cssClassImageButton, "Увеличить громкость");
+                                    @Html.ActionLinkImage(Url.Content("~/Content/button-volumeMute.png"), "Main/Volume/Mute", cssSizeButton, cssClassImageButton, "Отключить звук");
+                                    <br />
+                                }
+
+                                if (device is ISwitchable)
+                                {
+                                    string titleTextBox = "Установить канал";
+                                    string titlePrev = "Предыдущий канал";
+                                    string titleNext = "Следующий канал";
+                                    @Html.TextBox("TextBoxSwitch", ((ISwitchable)device).Current, new { id = "TextBoxSwich", title = titleTextBox, @class = cssClassTextBox, type = "number" });
+
+                                    if (device is IVolumenable && device is ISwitchable && device is IBassable)
+                                    {
+                                        titleTextBox = "Установить трек";
+                                        titlePrev = "Предыдущий трек";
+                                        titleNext = "Следующий трек";
+                                    }
+                                    @Html.ActionLinkImage(Url.Content("~/Content/button-previos.png"), "Main/Chanel/Previos", cssSizeButton, cssClassImageButton, titlePrev);
+                                    @Html.ActionLinkImage(Url.Content("~/Content/button-next.png"), "Main/Chanel/Next", cssSizeButton, cssClassImageButton, titleNext);
+                                    <br />
+                                }
+
+                                if (device is ITemperaturable)
+                                {
+                                    Html.TextBox("TextBoxTemp", ((ITemperaturable)device).Temperature, new { id = "TextBoxTemp", title = "Установить температуру", @class = cssClassTextBox, type = "number" });
+                                    Html.ActionLinkImage(Url.Content("~/Content/button-down.png"), @"Main\TemperatureDown", cssSizeButton, cssClassImageButton, "Уменьшить температуру");
+                                    Html.ActionLinkImage(Url.Content("~/Content/button-up.png"), @"Main\TemperatureUp", cssSizeButton, cssClassImageButton, "Увеличить температуру");
+                                    <br />
+                                }
+
+                                if (device is IBassable)
+                                {
+                                    Html.TextBox("TextBoxBass", ((IBassable)device).BassLevel, new { id = "TextBoxBass", title = "Установить уровень бассов", cssClass = cssClassTextBox });
+                                    Html.ActionLinkImage(Url.Content("~/Content/button-down.png"), @"Main\BassDown", cssSizeButton, cssClassImageButton, "Уменьшить уровень бассов");
+                                    Html.ActionLinkImage(Url.Content("~/Content/button-up.png"), @"Main\BassUp", cssSizeButton, cssClassImageButton, "Увеличить уровень бассов");
+                                    <br />
+                                }
+
+                                if (device is ISpeedAirable)//набор кнопок для управления вентилятором
+                                {
+                                    Html.ActionLinkImage(Url.Content("~/Content/button-low.png"), @"Main\SpeedAir", cssSizeButton, cssClassImageButton, "Низкая интенсивность");
+                                    Html.ActionLinkImage(Url.Content("~/Content/button-medium.png"), @"Main\SpeedAir", cssSizeButton, cssClassImageButton, "Средняя интенсивность");
+                                    Html.ActionLinkImage(Url.Content("~/Content/content\button-hight.png"), @"Main\SpeedAir", cssSizeButton, cssClassImageButton, "Высокая интенсивность");
+                                    <br />
+                                }
+                            }
+
+                        </div>
+
+                                    }
+                                }
+
+            </div>
+        </article>
+    </main>
+    <footer class="container footer">
+        <div class="text-center myContact">
+            <address class="footer-address">
+                <a href="">ejen2008@mail.ru</a>
+            </address>
+            <p class="footer-address">&copy;Войтов Е.П., 2017 г.</p>
+        </div>
+    </footer>
+</body>
+</html>
