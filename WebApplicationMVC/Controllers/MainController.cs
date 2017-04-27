@@ -39,6 +39,16 @@ namespace WebApplicationMVC.Controllers
             //.......................Test.............................
             return View(deviceDataView);
         }
+        [HttpGet]
+        public ActionResult CreateDevice()
+        {
+            return View();
+        }
+        [HttpPost]
+        public string CreateDevice(string buttonSubmit, string nameDevice)
+        {
+            return "name: " + buttonSubmit + " nameDev: " + nameDevice;
+        }
 
         public ActionResult DeleteDevice()
         {
@@ -63,13 +73,13 @@ namespace WebApplicationMVC.Controllers
         }
 
 
-        public ActionResult Volume(string id)
+        public ActionResult Volume(string parametr)
         {
             deviceDataView = DeviceData();
             IDevicable device = deviceDataView.DeviceActive;
-            if (device!=null && device.State == true )
+            if (device != null && device.State == true)
             {
-                switch (id)
+                switch (parametr)
                 {
                     case "Down":
                         {
@@ -89,7 +99,7 @@ namespace WebApplicationMVC.Controllers
                     default:
                         {
                             byte volume;
-                            byte.TryParse(id, out volume);
+                            byte.TryParse(parametr, out volume);
                             ((IVolumenable)device).Volume = volume;
                             break;
                         }
@@ -102,13 +112,13 @@ namespace WebApplicationMVC.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult Chanel(string id)
+        public ActionResult Chanel(string parametr)
         {
             deviceDataView = DeviceData();
             IDevicable device = deviceDataView.DeviceActive;
             if (device != null && device.State == true)
             {
-                switch (id)
+                switch (parametr)
                 {
                     case "Previos":
                         {
@@ -122,8 +132,8 @@ namespace WebApplicationMVC.Controllers
                         }
                     default:
                         {
-                            byte chanel;
-                            byte.TryParse(id, out chanel);
+                            int chanel;
+                            Int32.TryParse(parametr, out chanel);
                             ((ISwitchable)device).Current = chanel;
                             break;
                         }
@@ -137,15 +147,110 @@ namespace WebApplicationMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Temperature(string parametr)
+        {
+            deviceDataView = DeviceData();
+            IDevicable device = deviceDataView.DeviceActive;
+            if (device != null && device.State == true)
+            {
+                switch (parametr)
+                {
+                    case "Down":
+                        {
+                            ((ITemperaturable)device).TemperatureDown();
+                            break;
+                        }
+                    case "Up":
+                        {
+                            ((ITemperaturable)device).TemperatureUp();
+                            break;
+                        }
+                    default:
+                        {
+                            byte temper;
+                            byte.TryParse(parametr, out temper);
+                            ((ITemperaturable)device).Temperature = temper;
+                            break;
+                        }
+                }
+                deviceDataView.Message = null;
+            }
+            else
+            {
+                deviceDataView.Message = device.Name + " выкл.";
+            }
+            return RedirectToAction("Index");
+        }
+        public ActionResult Bass(string parametr)
+        {
+            deviceDataView = DeviceData();
+            IDevicable device = deviceDataView.DeviceActive;
+            if (device != null && device.State == true)
+            {
+                switch (parametr)
+                {
+                    case "Down":
+                        {
+                            ((IBassable)device).BassDown();
+                            break;
+                        }
+                    case "Up":
+                        {
+                            ((IBassable)device).BassUp();
+                            break;
+                        }
+                    default:
+                        {
+                            byte bass;
+                            byte.TryParse(parametr, out bass);
+                            ((IBassable)device).BassLevel = bass;
+                            break;
+                        }
+                }
+                deviceDataView.Message = null;
+            }
+            else
+            {
+                deviceDataView.Message = device.Name + " выкл.";
+            }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult SpeedAir(string parametr)
+        {
+            deviceDataView = DeviceData();
+            IDevicable device = deviceDataView.DeviceActive;
+            if (device != null && device.State == true)
+            {
+                switch (parametr)
+                {
+                    case "Low":
+                        {
+                            ((ISpeedAirable)device).SpeedAirLow();
+                            break;
+                        }
+                    case "Medium":
+                        {
+                            ((ISpeedAirable)device).SpeedAirMedium();
+                            break;
+                        }
+                    default://Hight
+                        {
+                            ((ISpeedAirable)device).SpeedAirHight();
+                            break;
+                        }
+                }
+                deviceDataView.Message = null;
+            }
+            else
+            {
+                deviceDataView.Message = device.Name + " выкл.";
+            }
+            return RedirectToAction("Index");
+        }
         private DeviceDataView DeviceData()
         {
             return (DeviceDataView)Session["Device"];
         }
-        //[HttpPost]
-        //public ActionResult Index()
-        //{
-
-        //    return View();
-        //}
     }
 }
