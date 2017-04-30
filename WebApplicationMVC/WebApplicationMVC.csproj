@@ -129,7 +129,7 @@
     </Compile>
     <Compile Include="Models\DeviceDataView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Helpers\ActionLinkImageHelper.cs" />
+    <Compile Include="Views\Helpers\ExpandHelper.cs" />
     <Compile Include="Views\ViewData\DeviceIconLink.cs" />
   </ItemGroup>
   <ItemGroup>

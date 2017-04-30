@@ -11,8 +11,8 @@ namespace WebApplicationMVC.Controllers
     public class MainController : Controller
     {
         DeviceDataView deviceDataView = new DeviceDataView(new Views.ViewData.DeviceIconLink());
-        Factory factory = new Factory();
-
+        Factory factory;
+        List<IDevicable> devicesList;
         //
         // GET: /Main/
         [HttpGet]
@@ -20,7 +20,8 @@ namespace WebApplicationMVC.Controllers
         {
             if (Session["Device"] == null)
             {
-                List<IDevicable> devicesList = new List<IDevicable>();
+                factory = new Factory();
+                devicesList = new List<IDevicable>();
                 devicesList.Add(factory.CreatorTV("Samsung"));
                 devicesList.Add(factory.CreatorSound("Sony"));
                 devicesList.Add(factory.CreatorHeater("HotHeater"));
@@ -28,26 +29,79 @@ namespace WebApplicationMVC.Controllers
                 devicesList.Add(factory.CreatorBlower("DaysonBlower"));
                 deviceDataView.DeviceList = devicesList;
                 Session["Device"] = deviceDataView;
+                //.......................Test.............................
+                deviceDataView.DeviceActive = deviceDataView.DeviceList[0];
+                //.......................Test.............................
             }
             else
             {
                 deviceDataView = DeviceData();
                 //devicesList = deviceDataView.DeviceList;
             }
-            //.......................Test.............................
-            deviceDataView.DeviceActive = deviceDataView.DeviceList[0];
-            //.......................Test.............................
+
             return View(deviceDataView);
         }
         [HttpGet]
         public ActionResult CreateDevice()
         {
-            return View();
+            deviceDataView = DeviceData();
+            return View(deviceDataView);
         }
         [HttpPost]
-        public string CreateDevice(string buttonSubmit, string nameDevice)
+        public ActionResult CreateDevice(string buttonSubmit, string nameDevice)
         {
-            return "name: " + buttonSubmit + " nameDev: " + nameDevice;
+            deviceDataView = DeviceData();
+            devicesList = deviceDataView.DeviceList;
+            factory = new Factory();
+            bool nameDouble = devicesList.Exists(device => device.Name == nameDevice);
+
+            if (string.IsNullOrEmpty(nameDevice) == false && nameDouble == false)
+            {
+                switch (buttonSubmit)
+                {
+                    case "TV":
+                        {
+                            devicesList.Add(factory.CreatorTV(nameDevice));
+                            break;
+                        }
+                    case "SD":
+                        {
+                            devicesList.Add(factory.CreatorSound(nameDevice));
+                            break;
+                        }
+                    case "condit":
+                        {
+                            devicesList.Add(factory.CreatorConditioner(nameDevice));
+                            break;
+                        }
+                    case "heater":
+                        {
+                            devicesList.Add(factory.CreatorHeater(nameDevice));
+                            break;
+                        }
+                    default://blower
+                        {
+                            devicesList.Add(factory.CreatorBlower(nameDevice));
+                            break;
+                        }
+                }
+                deviceDataView.Message = null;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                deviceDataView.Message = "Устройство с таким именем уже имеется, введите другое имя.";
+                return View(deviceDataView);
+            }
+        }
+
+        public ActionResult ActiveDevice(string parametr)
+        {
+            deviceDataView = DeviceData();
+            List<IDevicable> deviceList = deviceDataView.DeviceList;
+            IDevicable activDevice = deviceList.Find(device => device.Name == parametr);
+            deviceDataView.DeviceActive = activDevice;
+            return RedirectToAction("Index");
         }
 
         public ActionResult DeleteDevice()
@@ -64,6 +118,7 @@ namespace WebApplicationMVC.Controllers
             if (device.State == true)
             {
                 device.Off();
+                deviceDataView.Message = null;
             }
             else
             {

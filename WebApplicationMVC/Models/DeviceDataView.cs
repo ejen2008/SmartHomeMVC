@@ -20,8 +20,8 @@ namespace WebApplicationMVC.Models
         //public DeviceIconLink ObjectIconLink { private get; set; }
         public string LinkIconDevice(IDevicable device)
         {
-                return objectIconLink.LinkIconDevice(device);
-            
+            return objectIconLink.LinkIconDevice(device);
+
         }
     }
 }

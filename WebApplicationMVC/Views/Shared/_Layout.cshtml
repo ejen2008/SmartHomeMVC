@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using WebApplicationMVC.Views.Helpers
+@using WebApplicationMVC.Models
+@using SmartHome
+@model DeviceDataView
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Index</title>
@@ -6,8 +11,58 @@
     <link href="~/Content/index.css" rel="stylesheet" />
 </head>
 <body>
+    <div class="container">
+        <header>
+            <div class="row">
+                @* @Url.Content("~/Content/SmaryHomeLogo.png")*@
+                <img class="col-xs-3 img-responsive vcenter" id="imageHeader" src="/Content/SmaryHomeLogo.png" />
+                <!--
+                --------------->
+                <h1 class="col-xs-9 vcenter" id="head-list">Smart System Home Controls</h1>
+            </div>
+        </header>
+    </div>
+    <main class="container">
+        <menu class="row">
+            <div class="">
+                @{
+                    string cssClassSizeImageButton = "deviceBorder imageButton img-responsive";
+                }
+                @Html.ActionLinkImage(Url.Content("~/Content/createDevice.png"), "./CreateDevice", "col-xs-1 devicePadding text-center", cssClassSizeImageButton, "Создать новое устройство")
+
+                @for (int i = 0; i < Model.DeviceList.Count; i++)
+                {
+                    IDevicable device = Model.DeviceList[i];
+                    string cssClassDevice;
+                    if (device.State == true)
+                    {
+                        cssClassDevice = "col-xs-1 devicePadding deviceOn";//написать css
+                    }
+                    else
+                    {
+                        cssClassDevice = "col-xs-1 devicePadding deviceOff";
+                    }
+                    string imageIconDevice = Model.LinkIconDevice(device);
+                    string urlIconDevice = Url.Content(imageIconDevice);
+
+                    @Html.ActionLinkImage(urlIconDevice, "./ActiveDevice/" + device.Name, cssClassDevice, cssClassSizeImageButton, device.Name);
+                }
+                @* @Html.ActionLinkImage(Model.LinkIconDevice(Model.DeviceList[0]), @"Main\ActiveDevice", "col-xs-3 devicePadding deviceOn", cssClassSizeImageButton, Model.DeviceList[0].Name);*@
+            </div>
+
+        </menu>
 
         @RenderBody()
 
+
+    </main>
+    <footer class="container footer">
+        <div class="text-center myContact">
+            <address class="footer-address">
+                <a href="">ejen2008@mail.ru</a>
+            </address>
+            <p class="footer-address">&copy;Войтов Е.П., 2017 г.</p>
+        </div>
+    </footer>
 </body>
 </html>
