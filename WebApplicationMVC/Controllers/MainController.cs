@@ -176,10 +176,30 @@ namespace WebApplicationMVC.Controllers
             {
                 device.Off();
             }
-            else
+            else//false
             {
+                devicesList = deviceDataView.DeviceList;
+                if (device is ITemperaturable && device is ISpeedAirable)//сюда попадают все кондиционеры
+                {
+                    List<IDevicable> heaters = devicesList.FindAll(dev => dev is ITemperaturable);// находим все устройства с интерфейсом ITemperaturable
+                    heaters.RemoveAll(dev => dev is ISpeedAirable);// удаляем все устройства с интерфейсом ISpeedAirable, остаются устройства с интерфейсом ITemperaturable
+                    foreach (IDevicable heater in heaters)
+                    {
+                        device.stateDevice += heater.Off;
+                    }
+                }
+                else if (device is ITemperaturable)//сюда попадают все нагреватели
+                {
+                    List<IDevicable> conditioners = devicesList.FindAll(dev => dev is ITemperaturable && dev is ISpeedAirable);// находим все устройства с интерфейсом ITemperaturable и ISpeedAirable т.е. кондиционеры
+                    foreach (IDevicable condit in conditioners)
+                    {
+                        device.stateDevice += condit.Off;
+                    }
+                }
+
                 device.On();
                 deviceDataView.Message = null;
+
             }
             return RedirectToAction("Index");
         }
