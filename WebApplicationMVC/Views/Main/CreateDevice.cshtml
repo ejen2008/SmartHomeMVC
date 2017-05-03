@@ -5,39 +5,28 @@
 
 
 <article>
-    <div class="col-xs-6 col-sm-push-3 devicePadding deviceBorder row">
+    <div class="col-xs-6 col-sm-push-3 devicePadding deviceBorder form">
         @using (Html.BeginForm())
         {
             string nameButton = "buttonSubmit";
 
 
-            string cssButton = "deviceBorder imageButton img-responsive";
-            string cssImageOfButton = "";//
+            string cssButton = "deviceBorder imageButton buttonSubmitCreate";
+            string cssImageOfButton = "imageButtonCreateDevice";//
             <span id="nameDevice" class="col-xs-11  text-center  devicePadding deviceName">Добавление нового устройства</span>
             <br />
-                @Html.TextBox("nameDevice", "", new { title = "Введите имя устройства", placeholder = "Имя устройства", @class = "" });
+            @Html.TextBox("nameDevice", "", new { title = "Введите имя устройства", placeholder = "Имя устройства", @class = "col-xs-12" });
             <br />
             if (Model.Message != null)
             {
                 <span class="text-error">@Model.Message</span>
             }
             <br />
-
-            @Html.ButtonImageSubmit(nameButton, cssButton, "TV", Url.Content("~/Content/TV.png"), cssImageOfButton, "Добавить телевизор");
-            @Html.ButtonImageSubmit(nameButton, cssButton, "SD", Url.Content("~/Content/SoundDevice.png"), cssImageOfButton, "Добавить аудио устройство");
-            @Html.ButtonImageSubmit(nameButton, cssButton, "condit", Url.Content("~/Content/conditioner.png"), cssImageOfButton, "Добавить кондиционер");
-            @Html.ButtonImageSubmit(nameButton, cssButton, "heater", Url.Content("~/Content/heater.png"), cssImageOfButton, "Добавить нагревательно устройство");
-            @Html.ButtonImageSubmit(nameButton, cssButton, "blower", Url.Content("~/Content/blower.png"), cssImageOfButton, "Добавить вентилятор");
-            @*<button name="ButtonSubmit" type="submit" class="deviceBorder imageButton img-responsive" value="TV"><img  src="@Url.Content("~/Content/TV.png")" alt="TV" title="Добавить телевизор"/></button>
-                <br />
-                <button name="ButtonSubmit" type="submit" class="deviceBorder imageButton img-responsive" value="SD"><img src="@Url.Content("~/Content/SoundDevice.png")" alt="TV" title="Добавить телевизор" /></button>
-                <br />
-                <button name="ButtonSubmit" type="submit" class="deviceBorder imageButton img-responsive" value="condit"><img src="@Url.Content("~/Content/conditioner.png")" alt="TV" title="Добавить телевизор" /></button>
-                <br />
-                <button name="ButtonSubmit" type="submit" class="deviceBorder imageButton img-responsive" value="heater"><img src="@Url.Content("~/Content/heater.png")" alt="TV" title="Добавить телевизор" /></button>
-                <br />
-                <button name="ButtonSubmit" type="submit" class="deviceBorder img-responsive" value="blower"><img src="@Url.Content("~/Content/blower.png")" alt="TV" class="imageButton" title="Добавить телевизор" /></button>
-                <br />*@
+                @Html.ButtonImageSubmit(nameButton, cssButton, "TV", Url.Content("~/Content/TV.png"), cssImageOfButton, "Добавить телевизор");
+                @Html.ButtonImageSubmit(nameButton, cssButton, "SD", Url.Content("~/Content/SoundDevice.png"), cssImageOfButton, "Добавить аудио устройство");
+                @Html.ButtonImageSubmit(nameButton, cssButton, "condit", Url.Content("~/Content/conditioner.png"), cssImageOfButton, "Добавить кондиционер");
+                @Html.ButtonImageSubmit(nameButton, cssButton, "heater", Url.Content("~/Content/heater.png"), cssImageOfButton, "Добавить нагревательно устройство");
+                @Html.ButtonImageSubmit(nameButton, cssButton, "blower", Url.Content("~/Content/blower.png"), cssImageOfButton, "Добавить вентилятор");
         }
     </div>
 </article>

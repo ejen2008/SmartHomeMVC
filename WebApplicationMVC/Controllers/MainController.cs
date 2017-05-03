@@ -26,7 +26,7 @@ namespace WebApplicationMVC.Controllers
                 devicesList.Add(factory.CreatorSound("Sony"));
                 devicesList.Add(factory.CreatorHeater("HotHeater"));
                 devicesList.Add(factory.CreatorConditioner("Panasonic"));
-                devicesList.Add(factory.CreatorBlower("DaysonBlower"));
+                devicesList.Add(factory.CreatorBlower("Dayson"));
                 deviceDataView.DeviceList = devicesList;
                 Session["Device"] = deviceDataView;
                 //.......................Test.............................
@@ -36,10 +36,57 @@ namespace WebApplicationMVC.Controllers
             else
             {
                 deviceDataView = DeviceData();
-                //devicesList = deviceDataView.DeviceList;
             }
 
             return View(deviceDataView);
+        }
+        [HttpPost]
+        public ActionResult Index(string volume, string current, string temperature, string bass, string buttonSubmit)
+        {
+            
+            deviceDataView = DeviceData();
+            if (deviceDataView.DeviceActive.State == true)
+            {
+                devicesList = deviceDataView.DeviceList;
+                IDevicable device = devicesList.Find(devices => devices == deviceDataView.DeviceActive);
+                switch (buttonSubmit)
+                {
+                    case "volume":
+                        {
+                            byte valueParam;
+                            byte.TryParse(volume, out valueParam);
+                            ((IVolumenable)device).Volume = valueParam;
+                            break;
+                        }
+                    case "current":
+                        {
+                            int valueParam;
+                            int.TryParse(current, out valueParam);
+                            ((ISwitchable)device).Current = valueParam;
+                            break;
+                        }
+                    case "temperature":
+                        {
+                            byte valueParam;
+                            byte.TryParse(temperature, out valueParam);
+                            ((ITemperaturable)device).Temperature = valueParam;
+                            break;
+                        }
+                    case "bass":
+                        {
+                            byte valueParam;
+                            byte.TryParse(bass, out valueParam);
+                            ((IBassable)device).BassLevel = valueParam;
+                            break;
+                        }
+                }
+                deviceDataView.Message = null;
+            }
+            else
+            {
+                deviceDataView.Message = deviceDataView.DeviceActive.Name + " выкл.";
+            }
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public ActionResult CreateDevice()
@@ -101,14 +148,24 @@ namespace WebApplicationMVC.Controllers
             List<IDevicable> deviceList = deviceDataView.DeviceList;
             IDevicable activDevice = deviceList.Find(device => device.Name == parametr);
             deviceDataView.DeviceActive = activDevice;
+            deviceDataView.Message = null;
             return RedirectToAction("Index");
         }
 
         public ActionResult DeleteDevice()
         {
+            deviceDataView = DeviceData();
             List<IDevicable> devicesList = deviceDataView.DeviceList;
             devicesList.Remove(deviceDataView.DeviceActive);
-            deviceDataView.DeviceActive = null;
+            if (devicesList.Count > 0)
+            {
+                deviceDataView.DeviceActive = devicesList[0];
+            }
+            else
+            {
+                deviceDataView.DeviceActive = null;
+            }
+            
             return RedirectToAction("Index");
         }
         public ActionResult OnOffDevice()
@@ -118,11 +175,11 @@ namespace WebApplicationMVC.Controllers
             if (device.State == true)
             {
                 device.Off();
-                deviceDataView.Message = null;
             }
             else
             {
                 device.On();
+                deviceDataView.Message = null;
             }
             return RedirectToAction("Index");
         }
@@ -151,13 +208,6 @@ namespace WebApplicationMVC.Controllers
                             ((IVolumenable)device).Volume = 0;
                             break;
                         }
-                    default:
-                        {
-                            byte volume;
-                            byte.TryParse(parametr, out volume);
-                            ((IVolumenable)device).Volume = volume;
-                            break;
-                        }
                 }
                 deviceDataView.Message = null;
             }
@@ -183,13 +233,6 @@ namespace WebApplicationMVC.Controllers
                     case "Next":
                         {
                             ((ISwitchable)device).Next();
-                            break;
-                        }
-                    default:
-                        {
-                            int chanel;
-                            Int32.TryParse(parametr, out chanel);
-                            ((ISwitchable)device).Current = chanel;
                             break;
                         }
                 }
@@ -220,13 +263,6 @@ namespace WebApplicationMVC.Controllers
                             ((ITemperaturable)device).TemperatureUp();
                             break;
                         }
-                    default:
-                        {
-                            byte temper;
-                            byte.TryParse(parametr, out temper);
-                            ((ITemperaturable)device).Temperature = temper;
-                            break;
-                        }
                 }
                 deviceDataView.Message = null;
             }
@@ -252,13 +288,6 @@ namespace WebApplicationMVC.Controllers
                     case "Up":
                         {
                             ((IBassable)device).BassUp();
-                            break;
-                        }
-                    default:
-                        {
-                            byte bass;
-                            byte.TryParse(parametr, out bass);
-                            ((IBassable)device).BassLevel = bass;
                             break;
                         }
                 }

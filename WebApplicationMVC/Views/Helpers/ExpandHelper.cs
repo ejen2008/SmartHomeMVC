@@ -9,7 +9,7 @@ namespace WebApplicationMVC.Views.Helpers
     static public class ExpandHelper
     {
         public static MvcHtmlString ActionLinkImage(this HtmlHelper htmlHelper,
-        string srcImg, string urlHref, string cssClassHref, string cssClassImg, string title = "")
+        string srcImg, string urlHref, string cssClassHref = null, string cssClassImg = null, string title = "", string nameLink = null)
         {
             TagBuilder href = new TagBuilder("a");
             href.MergeAttribute("href", urlHref);
@@ -29,6 +29,15 @@ namespace WebApplicationMVC.Views.Helpers
             }
             href.InnerHtml = img.ToString(TagRenderMode.SelfClosing);
 
+            if (string.IsNullOrEmpty(nameLink) == false)
+            {
+                TagBuilder span = new TagBuilder("span");
+                span.AddCssClass("col-xs-10  text-center devicePadding deviceMenuName");
+                span.InnerHtml = nameLink;
+
+                href.InnerHtml = span.ToString() + @"<br />" + @"<br />" + img.ToString(TagRenderMode.SelfClosing);
+            }
+
             return MvcHtmlString.Create(href.ToString(TagRenderMode.Normal));
         }
 
@@ -38,7 +47,11 @@ string srcImg, string cssClassImg, string title = "")
             TagBuilder button = new TagBuilder("button");
             button.MergeAttribute("name", nameButton);
             button.MergeAttribute("type", "submit");
-            button.MergeAttribute("value", buttonValue);
+            if (string.IsNullOrEmpty(buttonValue) == false)
+            {
+                button.MergeAttribute("value", buttonValue);
+            }
+
             if (string.IsNullOrEmpty(title) == false)
             {
                 button.MergeAttribute("title", title);

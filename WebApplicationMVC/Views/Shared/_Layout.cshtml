@@ -11,47 +11,43 @@
     <link href="~/Content/index.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
+    <div class="container header">
         <header>
             <div class="row">
-                @* @Url.Content("~/Content/SmaryHomeLogo.png")*@
-                <img class="col-xs-3 img-responsive vcenter" id="imageHeader" src="/Content/SmaryHomeLogo.png" />
-                <!--
-                --------------->
-                <h1 class="col-xs-9 vcenter" id="head-list">Smart System Home Controls</h1>
-            </div>
-        </header>
-    </div>
-    <main class="container">
-        <menu class="row">
+                <img class="col-xs-3 img-responsive vcenter" id="imageHeader" src="/Content/SmaryHomeLogo.png" /><!--
+---------------><h1 class="col-xs-8 vcenter" id="head-list">Smart System Home Controls</h1>
+                </div>
+            </header>
+        </div>
+        <main class="container ">
             <div class="">
-                @{
-                    string cssClassSizeImageButton = "deviceBorder imageButton img-responsive";
-                }
-                @Html.ActionLinkImage(Url.Content("~/Content/createDevice.png"), "./CreateDevice", "col-xs-1 devicePadding text-center", cssClassSizeImageButton, "Создать новое устройство")
+                <menu class="row ">
 
-                @for (int i = 0; i < Model.DeviceList.Count; i++)
-                {
-                    IDevicable device = Model.DeviceList[i];
-                    string cssClassDevice;
-                    if (device.State == true)
-                    {
-                        cssClassDevice = "col-xs-1 devicePadding deviceOn";//написать css
-                    }
-                    else
-                    {
-                        cssClassDevice = "col-xs-1 devicePadding deviceOff";
-                    }
-                    string imageIconDevice = Model.LinkIconDevice(device);
-                    string urlIconDevice = Url.Content(imageIconDevice);
+                    @{
+                        string cssClassSizeImageButton = " img-responsive ";
 
-                    @Html.ActionLinkImage(urlIconDevice, "./ActiveDevice/" + device.Name, cssClassDevice, cssClassSizeImageButton, device.Name);
-                }
-                @* @Html.ActionLinkImage(Model.LinkIconDevice(Model.DeviceList[0]), @"Main\ActiveDevice", "col-xs-3 devicePadding deviceOn", cssClassSizeImageButton, Model.DeviceList[0].Name);*@
+                    }
+                    @Html.ActionLinkImage(Url.Content("~/Content/createDevice.png"), "./CreateDevice", "col-xs-1 devicePadding text-center deviceBorder buttonCreate", cssClassSizeImageButton, "Создать новое устройство", "Создать устройство")
+
+                    @for (int i = 0; i < Model.DeviceList.Count; i++)
+                    {
+                        IDevicable device = Model.DeviceList[i];
+                        string cssClassDevice;
+                        cssClassDevice = "col-xs-1 devicePadding deviceBorder deviceOn";
+                        if (device.State == false)
+                        {
+                            cssClassDevice = "col-xs-1 devicePadding deviceBorder deviceOff";
+                        }
+                        string imageIconDevice = Model.LinkIconDevice(device);
+                        string urlIconDevice = Url.Content(imageIconDevice);
+
+                        @Html.ActionLinkImage(urlIconDevice, "./ActiveDevice/" + device.Name, cssClassDevice, cssClassSizeImageButton, device.Name, device.Name);
+                    }
+                    @* @Html.ActionLinkImage(Model.LinkIconDevice(Model.DeviceList[0]), @"Main\ActiveDevice", "col-xs-3 devicePadding deviceOn", cssClassSizeImageButton, Model.DeviceList[0].Name);*@
+
+
+                </menu>
             </div>
-
-        </menu>
-
         @RenderBody()
 
 

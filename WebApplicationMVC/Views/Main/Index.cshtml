@@ -4,14 +4,15 @@
 @model DeviceDataView
 
 <article>
-    <div class="col-xs-6 col-sm-push-3 devicePadding deviceBorder row">
-        @if (Model.DeviceActive != null)
-        {
-            using (Html.BeginForm("ActiveDevice", "Main"))
+    @if (Model.DeviceActive != null && Model.DeviceList.Count >0)
+    {
+        <div class="col-xs-6 col-sm-push-3 devicePadding deviceBorder row form">
+
+            @using (Html.BeginForm())
             {
                 IDevicable device = Model.DeviceActive;
 
-
+                //"./DeleteDevice"
                 <span id="nameDevice" class="col-xs-11  text-center  devicePadding deviceName">@device.Name</span>
                 @Html.ActionLinkImage(Url.Content("~/Content/button-trash.png"), "./DeleteDevice", "btn-md", "btn-danger imageButtonIcon", "Удалить устройство")
                 string title = device.Name + " выкл.";
@@ -47,10 +48,13 @@
                     }
                     <br />
                     @{
-
+                        string nameButton = "buttonSubmit";
+                        string cssClassImageButtonSubmit = "imageButtonSubmit";
+                        string cssClassButtonSubmit = " btn-success buttonSubmit devicePadding";
                         if (device is IVolumenable)
                         {
-                            @Html.TextBox("TextBoxVolume", ((IVolumenable)device).Volume, new { id = "TextBoxVolume", title = "Установить громкость", @class = cssClassTextBox, type = "number" });
+                            @Html.TextBox("volume", ((IVolumenable)device).Volume, new { id = "TextBoxVolume", title = "Установить громкость", @class = cssClassTextBox, type = "number" });
+                            @Html.ButtonImageSubmit(nameButton, cssClassButtonSubmit, "volume", Url.Content("~/Content/button-ok.png"), cssClassImageButtonSubmit, "Установить уровень громкости");
                             @Html.ActionLinkImage(Url.Content("~/Content/button-volumeDown.png"), "./Volume/Down", cssSizeButton, cssClassImageButton, "Уменьшить громкость");
                             @Html.ActionLinkImage(Url.Content("~/Content/button-volumeUp.png"), "./Volume/Up", cssSizeButton, cssClassImageButton, "Увеличить громкость");
                             @Html.ActionLinkImage(Url.Content("~/Content/button-volumeMute.png"), "./Volume/Mute", cssSizeButton, cssClassImageButton, "Отключить звук");
@@ -63,14 +67,14 @@
                             string titleTextBox = "Установить канал";
                             string titlePrev = "Предыдущий канал";
                             string titleNext = "Следующий канал";
-                            @Html.TextBox("TextBoxSwitch", ((ISwitchable)device).Current, new { id = "TextBoxSwich", title = titleTextBox, @class = cssClassTextBox, type = "number" });
-
                             if (device is IVolumenable && device is ISwitchable && device is IBassable)
                             {
                                 titleTextBox = "Установить трек";
                                 titlePrev = "Предыдущий трек";
                                 titleNext = "Следующий трек";
                             }
+                            @Html.TextBox("current", ((ISwitchable)device).Current, new { id = "TextBoxSwich", title = titleTextBox, @class = cssClassTextBox, type = "number" });
+                            @Html.ButtonImageSubmit(nameButton, cssClassButtonSubmit, "current", Url.Content("~/Content/button-ok.png"), cssClassImageButtonSubmit, titleTextBox);
                             @Html.ActionLinkImage(Url.Content("~/Content/button-previos.png"), "./Chanel/Previos", cssSizeButton, cssClassImageButton, titlePrev);
                             @Html.ActionLinkImage(Url.Content("~/Content/button-next.png"), "./Chanel/Next", cssSizeButton, cssClassImageButton, titleNext);
                             <br />
@@ -78,7 +82,8 @@
 
                         if (device is ITemperaturable)
                         {
-                            @Html.TextBox("TextBoxTemp", ((ITemperaturable)device).Temperature, new { id = "TextBoxTemp", title = "Установить температуру", @class = cssClassTextBox, type = "number" });
+                            @Html.TextBox("temperature", ((ITemperaturable)device).Temperature, new { id = "TextBoxTemp", title = "Установить температуру", @class = cssClassTextBox, type = "number" });
+                            @Html.ButtonImageSubmit(nameButton, cssClassButtonSubmit, "temperature", Url.Content("~/Content/button-ok.png"), cssClassImageButtonSubmit, "Установить уровень температуры");
                             @Html.ActionLinkImage(Url.Content("~/Content/button-down.png"), "./Temperature/Down", cssSizeButton, cssClassImageButton, "Уменьшить температуру");
                             @Html.ActionLinkImage(Url.Content("~/Content/button-up.png"), "./Temperature/Up", cssSizeButton, cssClassImageButton, "Увеличить температуру");
                             <br />
@@ -86,7 +91,8 @@
 
                         if (device is IBassable)
                         {
-                            @Html.TextBox("TextBoxBass", ((IBassable)device).BassLevel, new { id = "TextBoxBass", title = "Установить уровень бассов", @class = cssClassTextBox, type = "number" });
+                            @Html.TextBox("bass", ((IBassable)device).BassLevel, new { id = "TextBoxBass", title = "Установить уровень бассов", @class = cssClassTextBox, type = "number" });
+                            @Html.ButtonImageSubmit(nameButton, cssClassButtonSubmit, "bass", Url.Content("~/Content/button-ok.png"), cssClassImageButtonSubmit, "Установить уровень бассов");
                             @Html.ActionLinkImage(Url.Content("~/Content/button-down.png"), "./Bass/Down", cssSizeButton, cssClassImageButton, "Уменьшить уровень бассов");
                             @Html.ActionLinkImage(Url.Content("~/Content/button-up.png"), "./Bass/Up", cssSizeButton, cssClassImageButton, "Увеличить уровень бассов");
                             <br />
@@ -119,9 +125,9 @@
                     }
 
                 </div>
-
-                            }
                         }
 
-    </div>
+
+        </div>
+                        }
 </article>
