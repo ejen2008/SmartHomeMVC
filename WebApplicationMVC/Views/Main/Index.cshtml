@@ -14,7 +14,7 @@
 
                 //"./DeleteDevice"
                 <span id="nameDevice" class="col-xs-11  text-center  devicePadding deviceName">@device.Name</span>
-                @Html.ActionLinkImage(Url.Content("~/Content/button-trash.png"), "./DeleteDevice", "btn-md", "btn-danger imageButtonIcon", "Удалить устройство")
+                @Html.ActionLinkImage(Url.Content("~/Content/button-trash.png"), "/Main/DeleteDevice", "btn-md", "btn-danger imageButtonIcon", "Удалить устройство")
                 string title = device.Name + " выкл.";
                 if (device.State == true)
                 {
@@ -36,7 +36,7 @@
                             cssClass = cssClassImageButton;
                         }
                     }
-                    @Html.ActionLinkImage(Url.Content("~/Content/button-OnOff.png"), "./OnOffDevice", cssSizeButton, cssClass, title)
+                    @Html.ActionLinkImage(Url.Content("~/Content/button-OnOff.png"), "/Main/OnOffDevice", cssSizeButton, cssClass, title)
 
                     @if (Model.Message != null)
                     {
@@ -55,9 +55,9 @@
                         {
                             @Html.TextBox("volume", ((IVolumenable)device).Volume, new { id = "TextBoxVolume", title = "Установить громкость", @class = cssClassTextBox, type = "number" });
                             @Html.ButtonImageSubmit(nameButton, cssClassButtonSubmit, "volume", Url.Content("~/Content/button-ok.png"), cssClassImageButtonSubmit, "Установить уровень громкости");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-volumeDown.png"), "./Volume/Down", cssSizeButton, cssClassImageButton, "Уменьшить громкость");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-volumeUp.png"), "./Volume/Up", cssSizeButton, cssClassImageButton, "Увеличить громкость");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-volumeMute.png"), "./Volume/Mute", cssSizeButton, cssClassImageButton, "Отключить звук");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-volumeDown.png"), "/Main/Volume/Down", cssSizeButton, cssClassImageButton, "Уменьшить громкость");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-volumeUp.png"), "/Main/Volume/Up", cssSizeButton, cssClassImageButton, "Увеличить громкость");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-volumeMute.png"), "/Main/Volume/Mute", cssSizeButton, cssClassImageButton, "Отключить звук");
                             <br />
 
                         }
@@ -75,8 +75,8 @@
                             }
                             @Html.TextBox("current", ((ISwitchable)device).Current, new { id = "TextBoxSwich", title = titleTextBox, @class = cssClassTextBox, type = "number" });
                             @Html.ButtonImageSubmit(nameButton, cssClassButtonSubmit, "current", Url.Content("~/Content/button-ok.png"), cssClassImageButtonSubmit, titleTextBox);
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-previos.png"), "./Chanel/Previos", cssSizeButton, cssClassImageButton, titlePrev);
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-next.png"), "./Chanel/Next", cssSizeButton, cssClassImageButton, titleNext);
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-previos.png"), "/Main/Chanel/Previos", cssSizeButton, cssClassImageButton, titlePrev);
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-next.png"), "/Main/Chanel/Next", cssSizeButton, cssClassImageButton, titleNext);
                             <br />
                         }
 
@@ -84,8 +84,8 @@
                         {
                             @Html.TextBox("temperature", ((ITemperaturable)device).Temperature, new { id = "TextBoxTemp", title = "Установить температуру", @class = cssClassTextBox, type = "number" });
                             @Html.ButtonImageSubmit(nameButton, cssClassButtonSubmit, "temperature", Url.Content("~/Content/button-ok.png"), cssClassImageButtonSubmit, "Установить уровень температуры");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-down.png"), "./Temperature/Down", cssSizeButton, cssClassImageButton, "Уменьшить температуру");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-up.png"), "./Temperature/Up", cssSizeButton, cssClassImageButton, "Увеличить температуру");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-down.png"), "/Main/Temperature/Down", cssSizeButton, cssClassImageButton, "Уменьшить температуру");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-up.png"), "/Main/Temperature/Up", cssSizeButton, cssClassImageButton, "Увеличить температуру");
                             <br />
                         }
 
@@ -93,8 +93,8 @@
                         {
                             @Html.TextBox("bass", ((IBassable)device).BassLevel, new { id = "TextBoxBass", title = "Установить уровень бассов", @class = cssClassTextBox, type = "number" });
                             @Html.ButtonImageSubmit(nameButton, cssClassButtonSubmit, "bass", Url.Content("~/Content/button-ok.png"), cssClassImageButtonSubmit, "Установить уровень бассов");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-down.png"), "./Bass/Down", cssSizeButton, cssClassImageButton, "Уменьшить уровень бассов");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-up.png"), "./Bass/Up", cssSizeButton, cssClassImageButton, "Увеличить уровень бассов");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-down.png"), "/Main/Bass/Down", cssSizeButton, cssClassImageButton, "Уменьшить уровень бассов");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-up.png"), "/Main/Bass/Up", cssSizeButton, cssClassImageButton, "Увеличить уровень бассов");
                             <br />
                         }
 
@@ -117,9 +117,9 @@
                                 cssClassButtonHight = cssClassImageButtonOff;
                             }
 
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-low.png"), "./SpeedAir/Low", cssSizeButton, cssClassButtonLow, "Низкая интенсивность");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-medium.png"), "./SpeedAir/Medium", cssSizeButton, cssClassButtonMedium, "Средняя интенсивность");
-                            @Html.ActionLinkImage(Url.Content("~/Content/button-hight.png"), "./SpeedAir/Hight", cssSizeButton, cssClassButtonHight, "Высокая интенсивность");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-low.png"), "/Main/SpeedAir/Low", cssSizeButton, cssClassButtonLow, "Низкая интенсивность");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-medium.png"), "/Main/SpeedAir/Medium", cssSizeButton, cssClassButtonMedium, "Средняя интенсивность");
+                            @Html.ActionLinkImage(Url.Content("~/Content/button-hight.png"), "/Main/SpeedAir/Hight", cssSizeButton, cssClassButtonHight, "Высокая интенсивность");
                             <br />
                         }
                     }

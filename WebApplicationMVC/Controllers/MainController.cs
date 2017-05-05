@@ -142,11 +142,11 @@ namespace WebApplicationMVC.Controllers
             }
         }
 
-        public ActionResult ActiveDevice(string parametr)
+        public ActionResult ActiveDevice(string parameter)
         {
             deviceDataView = DeviceData();
             List<IDevicable> deviceList = deviceDataView.DeviceList;
-            IDevicable activDevice = deviceList.Find(device => device.Name == parametr);
+            IDevicable activDevice = deviceList.Find(device => device.Name == parameter);
             deviceDataView.DeviceActive = activDevice;
             deviceDataView.Message = null;
             return RedirectToAction("Index");
@@ -205,13 +205,13 @@ namespace WebApplicationMVC.Controllers
         }
 
 
-        public ActionResult Volume(string parametr)
+        public ActionResult Volume(string parameter)
         {
             deviceDataView = DeviceData();
             IDevicable device = deviceDataView.DeviceActive;
             if (device != null && device.State == true)
             {
-                switch (parametr)
+                switch (parameter)
                 {
                     case "Down":
                         {
@@ -237,13 +237,13 @@ namespace WebApplicationMVC.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult Chanel(string parametr)
+        public ActionResult Chanel(string parameter)
         {
             deviceDataView = DeviceData();
             IDevicable device = deviceDataView.DeviceActive;
             if (device != null && device.State == true)
             {
-                switch (parametr)
+                switch (parameter)
                 {
                     case "Previos":
                         {
@@ -265,13 +265,13 @@ namespace WebApplicationMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Temperature(string parametr)
+        public ActionResult Temperature(string parameter)
         {
             deviceDataView = DeviceData();
             IDevicable device = deviceDataView.DeviceActive;
             if (device != null && device.State == true)
             {
-                switch (parametr)
+                switch (parameter)
                 {
                     case "Down":
                         {
@@ -292,13 +292,13 @@ namespace WebApplicationMVC.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult Bass(string parametr)
+        public ActionResult Bass(string parameter)
         {
             deviceDataView = DeviceData();
             IDevicable device = deviceDataView.DeviceActive;
             if (device != null && device.State == true)
             {
-                switch (parametr)
+                switch (parameter)
                 {
                     case "Down":
                         {
@@ -320,13 +320,13 @@ namespace WebApplicationMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SpeedAir(string parametr)
+        public ActionResult SpeedAir(string parameter)
         {
             deviceDataView = DeviceData();
             IDevicable device = deviceDataView.DeviceActive;
             if (device != null && device.State == true)
             {
-                switch (parametr)
+                switch (parameter)
                 {
                     case "Low":
                         {

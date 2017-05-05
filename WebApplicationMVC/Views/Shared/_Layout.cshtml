@@ -27,7 +27,7 @@
                         string cssClassSizeImageButton = " img-responsive ";
 
                     }
-                    @Html.ActionLinkImage(Url.Content("~/Content/createDevice.png"), "./CreateDevice", "col-xs-1 devicePadding text-center deviceBorder buttonCreate", cssClassSizeImageButton, "Создать новое устройство", "Создать устройство")
+                    @Html.ActionLinkImage(Url.Content("~/Content/createDevice.png"), "/Main/CreateDevice", "col-xs-1 devicePadding text-center deviceBorder buttonCreate", cssClassSizeImageButton, "Создать новое устройство", "Создать устройство")
 
                     @for (int i = 0; i < Model.DeviceList.Count; i++)
                     {
@@ -41,7 +41,7 @@
                         string imageIconDevice = Model.LinkIconDevice(device);
                         string urlIconDevice = Url.Content(imageIconDevice);
 
-                        @Html.ActionLinkImage(urlIconDevice, "./ActiveDevice/" + device.Name, cssClassDevice, cssClassSizeImageButton, device.Name, device.Name);
+                        @Html.ActionLinkImage(urlIconDevice, "/Main/ActiveDevice/" + device.Name, cssClassDevice, cssClassSizeImageButton, device.Name, device.Name);
                     }
                     @* @Html.ActionLinkImage(Model.LinkIconDevice(Model.DeviceList[0]), @"Main\ActiveDevice", "col-xs-3 devicePadding deviceOn", cssClassSizeImageButton, Model.DeviceList[0].Name);*@
 

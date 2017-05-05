@@ -15,8 +15,8 @@ namespace WebApplicationMVC
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{parametr}/{id}",
-                defaults: new { controller = "Main", action = "Index", parametr = UrlParameter.Optional, id = UrlParameter.Optional }
+                url: "{controller}/{action}/{parameter}/{id}",
+                defaults: new { controller = "Main", action = "Index", parameter = UrlParameter.Optional, id = UrlParameter.Optional }
             );
         }
     }
