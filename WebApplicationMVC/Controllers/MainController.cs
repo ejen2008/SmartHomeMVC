@@ -32,6 +32,7 @@ namespace WebApplicationMVC.Controllers
                 //.......................Test.............................
                 deviceDataView.DeviceActive = deviceDataView.DeviceList[0];
                 //.......................Test.............................
+                EventStateDevice();
             }
             else
             {
@@ -43,7 +44,7 @@ namespace WebApplicationMVC.Controllers
         [HttpPost]
         public ActionResult Index(string volume, string current, string temperature, string bass, string buttonSubmit)
         {
-            
+
             deviceDataView = DeviceData();
             if (deviceDataView.DeviceActive.State == true)
             {
@@ -88,6 +89,25 @@ namespace WebApplicationMVC.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        private void EventStateDevice()
+        {
+            devicesList = deviceDataView.DeviceList;
+
+            List<IDevicable> heaters = devicesList.FindAll(dev => dev is ITemperaturable);// находим все устройства с интерфейсом ITemperaturable
+            heaters.RemoveAll(dev => dev is ISpeedAirable);// удаляем все устройства с интерфейсом ISpeedAirable, остаются устройства с интерфейсом ITemperaturable
+            List<IDevicable> conditioners = devicesList.FindAll(dev => dev is ITemperaturable && dev is ISpeedAirable);// находим все устройства с интерфейсом ITemperaturable и ISpeedAirable т.е. кондиционеры
+
+            foreach (IDevicable heater in heaters)
+            {
+                foreach (IDevicable conditioner in conditioners)
+                {
+                    conditioner.stateDevice += heater.Off;
+                    heater.stateDevice += conditioner.Off;
+                }
+            }
+        }
+
         [HttpGet]
         public ActionResult CreateDevice()
         {
@@ -133,6 +153,8 @@ namespace WebApplicationMVC.Controllers
                         }
                 }
                 deviceDataView.Message = null;
+                deviceDataView.DeviceActive = devicesList.Last<IDevicable>();
+                EventStateDevice();
                 return RedirectToAction("Index");
             }
             else
@@ -165,7 +187,7 @@ namespace WebApplicationMVC.Controllers
             {
                 deviceDataView.DeviceActive = null;
             }
-            
+
             return RedirectToAction("Index");
         }
         public ActionResult OnOffDevice()
@@ -178,24 +200,24 @@ namespace WebApplicationMVC.Controllers
             }
             else//false
             {
-                devicesList = deviceDataView.DeviceList;
-                if (device is ITemperaturable && device is ISpeedAirable)//сюда попадают все кондиционеры
-                {
-                    List<IDevicable> heaters = devicesList.FindAll(dev => dev is ITemperaturable);// находим все устройства с интерфейсом ITemperaturable
-                    heaters.RemoveAll(dev => dev is ISpeedAirable);// удаляем все устройства с интерфейсом ISpeedAirable, остаются устройства с интерфейсом ITemperaturable
-                    foreach (IDevicable heater in heaters)
-                    {
-                        device.stateDevice += heater.Off;
-                    }
-                }
-                else if (device is ITemperaturable)//сюда попадают все нагреватели
-                {
-                    List<IDevicable> conditioners = devicesList.FindAll(dev => dev is ITemperaturable && dev is ISpeedAirable);// находим все устройства с интерфейсом ITemperaturable и ISpeedAirable т.е. кондиционеры
-                    foreach (IDevicable condit in conditioners)
-                    {
-                        device.stateDevice += condit.Off;
-                    }
-                }
+                //devicesList = deviceDataView.DeviceList;
+                //if (device is ITemperaturable && device is ISpeedAirable)//сюда попадают все кондиционеры
+                //{
+                //    List<IDevicable> heaters = devicesList.FindAll(dev => dev is ITemperaturable);// находим все устройства с интерфейсом ITemperaturable
+                //    heaters.RemoveAll(dev => dev is ISpeedAirable);// удаляем все устройства с интерфейсом ISpeedAirable, остаются устройства с интерфейсом ITemperaturable
+                //    foreach (IDevicable heater in heaters)
+                //    {
+                //        device.stateDevice += heater.Off;
+                //    }
+                //}
+                //else if (device is ITemperaturable)//сюда попадают все нагреватели
+                //{
+                //    List<IDevicable> conditioners = devicesList.FindAll(dev => dev is ITemperaturable && dev is ISpeedAirable);// находим все устройства с интерфейсом ITemperaturable и ISpeedAirable т.е. кондиционеры
+                //    foreach (IDevicable condit in conditioners)
+                //    {
+                //        device.stateDevice += condit.Off;
+                //    }
+                //}
 
                 device.On();
                 deviceDataView.Message = null;
